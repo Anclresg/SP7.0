@@ -26,19 +26,16 @@ adivina() {
     intentos=0
     echo "He pensado en un número entre 1 y 100. ¡Adivínalo!"
 
-    while true; do
-        read -p "Introduce tu suposición: " suposicion
-        intentos=$(($intentos + 1))
+    read -p "Introduce tu suposición: " suposicion
+    intentos=$(($intentos + 1))
 
-        if [ $suposicion -lt $numero_secreto ]; then
-            echo "El número es mayor."
-        elif [ $suposicion -gt $numero_secreto ]; then
-            echo "El número es menor."
-        else
-            echo "¡Felicidades! Has adivinado el número $numero_secreto en $intentos intentos."
-            break
-        fi
-    done
+    if [ $suposicion -lt $numero_secreto ]; then
+        echo "El número es mayor."
+    elif [ $suposicion -gt $numero_secreto ]; then
+        echo "El número es menor."
+    else
+        echo "¡Felicidades! Has adivinado el número $numero_secreto en $intentos intentos."
+    fi
 }
 
 # Función para determinar la etapa de vida basada en la edad
