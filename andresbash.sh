@@ -47,24 +47,21 @@ configurarred() {
 }
 
 # Función para el juego de adivina el número
-adivina(){
-  aleatorio=$((RANDOM % 100 + 1))
-  intentos=0
-  numero=0
+adivina() {
+    numero_secreto=$((RANDOM % 100 + 1))
+    intentos=0
+    echo "He pensado en un número entre 1 y 100. ¡Adivínalo!"
 
-  while (( numero != aleatorio )); do
-    read -p "Introduzca un número: " numero
-    ((try++))
+    read -p "Introduce tu suposición: " suposicion
+    intentos=$(($intentos + 1))
 
-    if (( numero == aleatorio )); then
-      echo "Adivinaste el número $aleatorio en $intentos intentos."
-      break
-    elif (( numero < aleatorio )); then
-      echo "Pruebe con un número mayor."
+    if [ $suposicion -lt $numero_secreto ]; then
+        echo "El número es mayor."
+    elif [ $suposicion -gt $numero_secreto ]; then
+        echo "El número es menor."
     else
-      echo "Pruebe con un número menor."
+        echo "¡Felicidades! Has adivinado el número $numero_secreto en $intentos intentos."
     fi
-  done
 }
 
 
