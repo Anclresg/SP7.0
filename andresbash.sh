@@ -50,19 +50,26 @@ configurarred() {
 adivina() {
     numero_secreto=$((RANDOM % 100 + 1))
     intentos=0
+    max_intentos=10
     echo "He pensado en un número entre 1 y 100. ¡Adivínalo!"
 
-    read -p "Introduce tu suposición: " suposicion
-    intentos=$(($intentos + 1))
+    while [ $intentos -lt $max_intentos ]; do
+        read -p "Introduce tu suposición (intento $((intentos+1))/$max_intentos): " suposicion
+        intentos=$(($intentos + 1))
 
-    if [ $suposicion -lt $numero_secreto ]; then
-        echo "El número es mayor."
-    elif [ $suposicion -gt $numero_secreto ]; then
-        echo "El número es menor."
-    else
-        echo "¡Felicidades! Has adivinado el número $numero_secreto en $intentos intentos."
-    fi
+        if [ $suposicion -lt $numero_secreto ]; then
+            echo "El número es mayor."
+        elif [ $suposicion -gt $numero_secreto ]; then
+            echo "El número es menor."
+        else
+            echo "¡Felicidades! Has adivinado el número $numero_secreto en $intentos intentos."
+            return
+        fi
+    done
+
+    echo "Lo siento, has agotado tus $max_intentos intentos. El número era $numero_secreto."
 }
+
 
 # Función para determinar la etapa de vida basada en la edad
 determinar_edad() {
