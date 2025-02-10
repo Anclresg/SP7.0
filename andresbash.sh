@@ -19,6 +19,32 @@ es_bisiesto() {
         echo "El año $year no es bisiesto."
     fi
 }
+# Función para configurar la red
+configurarred() {
+    ip=$1
+    mascara=$2
+    puerta_enlace=$3
+    dns=$4
+
+    if [ -z "$ip" ] || [ -z "$mascara" ] || [ -z "$puerta_enlace" ] || [ -z "$dns" ]; then
+        echo "Se necesitan cuatro parámetros: IP, Máscara, Puerta de enlace, y DNS"
+        return
+    fi
+
+    # Configurar la red con ip route
+    sudo ip addr add $ip/$mascara dev eth0
+    sudo ip link set eth0 up
+    sudo ip route add default via $puerta_enlace
+
+    # Configurar DNS
+    echo "nameserver $dns" | sudo tee /etc/resolv.conf > /dev/null
+
+    # Mostrar configuración
+    echo "Configuración de red actualizada:"
+    ip addr show eth0
+    ip route show
+    cat /etc/resolv.conf
+}
 
 # Función para el juego de adivina el número
 adivina() {
@@ -353,7 +379,11 @@ scriptadd() {
                 es_bisiesto $year
                 ;;
             3)
-                echo "configurarred"
+                read -p "Introduce IP: " ip
+                read -p "Introduce Máscara: " mascara
+                read -p "Introduce Puerta de enlace: " puerta_enlace
+                read -p "Introduce DNS: " dns
+                configurarred $ip $mascara $puerta_enlace $dns
                 ;;
             4)
                 adivina
